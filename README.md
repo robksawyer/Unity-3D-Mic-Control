@@ -41,7 +41,7 @@ A script that allows you to call information from the computers microphone from 
 (Once placed on a player or empty gameObject all its public functions and variables can be called from any script. See the call functions below).
 
 
-### [Chapter 1](#Chapter-1): User accessible variables and functions
+### [Chapter 1](Chapter-1): User accessible variables and functions
 
 ```
 //Call variables and functions. All these functions can be called from external java or C# scripts.
@@ -63,7 +63,7 @@ MicControl.MicDeviceGUI (left:float , top:float, width:float, height:float, butt
 ```
 
 
-### [Chapter 2](#Chapter-2): Explanation of all the variables and functions used in the script
+### [Chapter 2](Chapter-2): Explanation of all the variables and functions used in the script
 
 #### Public Variables
 > All variables shown in the editor are to control the input volume/data (you cannot edit the audio, only use it as a control value).
@@ -140,7 +140,7 @@ function OnApplicationFocus(focus: boolean): This will switch the 'focused' bool
 function OnApplicationPause(focus: boolean): This will switch the 'focused' boolean to false if the application is not active.
 
 
-### [Chapter 3](#Chapter-3): Examples
+### [Chapter 3](Chapter-3): Examples
 
 #### Java
 
@@ -193,7 +193,7 @@ MicControl.MicDeviceGUI(400, 100, 300, 100, 110, 0);
 ```
 
 
-### [Chapter 4](#Chapter-4): WebPlayer Setup
+### [Chapter 4](Chapter-4): WebPlayer Setup
 
 To use this script in the web player do not switch the platform to webplayer mode! As of this writing 31-07-2014 the unity editor crashes when initializing the microphone
 in the editors 'webplayer' playmode.
