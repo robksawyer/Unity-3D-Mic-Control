@@ -7,10 +7,10 @@
 
 This is not included because it troubles the normal machines builds.
 
-- [Chapter 1](#Chapter-1): User accessible variables and functions
-- [Chapter 2](#Chapter-2): Explanation of the script variables and functions (how the script works).
-- [Chapter 3](#Chapter-3): Examples.
-- [Chapter 4](#Chapter-4): WebPLayer setup.
+- [Chapter 1](#chapter-1-user-accessible-variables-and-functions): User accessible variables and functions
+- [Chapter 2](#chapter-2-explanation-of-all-the-variables-and-functions-used-in-the-script): Explanation of the script variables and functions (how the script works).
+- [Chapter 3](#chapter-3-examples): Examples.
+- [Chapter 4](#chapter-4-webplayer-setup): WebPLayer setup.
 
 Newest video tutorial: <https:https:https://www.youtube.com/watch?v=pD29teWi2fg>
 Webplayer tutorial: <https://www.youtube.com/watch?v=euL41orNfPM&feature=youtu.be>
@@ -169,7 +169,7 @@ function Start(){
 MicControl.MicDeviceGUI(400, 100, 300, 100, 110, 0);
 ```
 
-#### C#
+#### `C#`
 
 ```
 //this example will scale an object based on the values received trough the microphone. The object will scale with the strength of your voice.
