@@ -35,10 +35,10 @@ A script that allows you to call information from the computers microphone from 
 
 ## How To Setup
 
-1. Place script on player or empty gameObject. "(this has to be done to call it from any other script)."
+1. Place script on player or empty gameObject. Note: This has to be done in order to call it from any other script
 2. Done
 
-(Once placed on a player or empty gameObject all its public functions and variables can be called from any script. See the call functions below).
+Once placed on a player or empty gameObject all its public functions and variables can be called from any script. See the call functions below.
 
 
 ### [Chapter 1](Chapter-1): User accessible variables and functions
