@@ -7,10 +7,10 @@
 
 This is not included because it troubles the normal machines builds.
 
-[Chapter 1](#Chapter-1): User accessible variables and functions
-[Chapter 2](#Chapter-2): Explanation of the script variables and functions (how the script works).
-[Chapter 3](#Chapter-3): Examples.
-[Chapter 4](#Chapter-4): WebPLayer setup.
+- [Chapter 1](#Chapter-1): User accessible variables and functions
+- [Chapter 2](#Chapter-2): Explanation of the script variables and functions (how the script works).
+- [Chapter 3](#Chapter-3): Examples.
+- [Chapter 4](#Chapter-4): WebPLayer setup.
 
 Newest video tutorial: <https:https:https://www.youtube.com/watch?v=pD29teWi2fg>
 Webplayer tutorial: <https://www.youtube.com/watch?v=euL41orNfPM&feature=youtu.be>
