@@ -3,24 +3,18 @@
 
 ## Original source code (java) created by Mark Duisters.
 
-//This javascript contains the original source code a varient in C# exist and is delivered with this asset, it is created by a community user based
-//on this version. In that version is shown how the script can be used to create a push to talk function. Those kind of functions do not exist in
-//the javascript version because it is up to the developer himself to develope that kind of functionality based on this asset.
-//There is an example scene delivered with this asset showing off object scaling based on voice strength and showing of the build in gui selection screen.
-//there is also a tutorial video.
+**For the WebPlayer build you need to add this code <http://docs.unity3d.com/412/Documentation/ScriptReference/Application.RequestUserAuthorization.html?from=UserAuthorization>**
 
-//For WebPlayer build !!! you need to add this code http://docs.unity3d.com/412/Documentation/ScriptReference/Application.RequestUserAuthorization.html?from=UserAuthorization
-//This is not included this script or the source code because it troubles the normal machines builds.
+This is not included because it troubles the normal machines builds.
 
-[Chapter 1](#Chapter 1): User accessible variables and functions
-[Chapter 2](#Chapter 2): Explanation of the script variables and functions (how the script works).
-[Chapter 3](#Chapter 3): Examples.
-[Chapter 4](#Chapter 4): WebPLayer setup.
+[Chapter 1](#Chapter-1): User accessible variables and functions
+[Chapter 2](#Chapter-2): Explanation of the script variables and functions (how the script works).
+[Chapter 3](#Chapter-3): Examples.
+[Chapter 4](#Chapter-4): WebPLayer setup.
 
-Newest video tutorial: https:https:https://www.youtube.com/watch?v=pD29teWi2fg
-webplayer tutorial: https://www.youtube.com/watch?v=euL41orNfPM&feature=youtu.be
-older video tutorial: http://www.youtube.com/watch?v=VqHYP7iVG3E&feature=youtu.be
-
+Newest video tutorial: <https:https:https://www.youtube.com/watch?v=pD29teWi2fg>
+Webplayer tutorial: <https://www.youtube.com/watch?v=euL41orNfPM&feature=youtu.be>
+Older video tutorial: <http://www.youtube.com/watch?v=VqHYP7iVG3E&feature=youtu.be>
 
 ### Functionality Overview
 
@@ -33,18 +27,11 @@ older video tutorial: http://www.youtube.com/watch?v=VqHYP7iVG3E&feature=youtu.b
 7. Can call the input loudness from outside the script.
 8. Create a GUI from any script with a build in gui function.
 
-
 A script that allows you to call information from the computers microphone from any script.
 
-It can recognize up to six different mic's.
-The user can set the Sensitivity and choose to show debug information. Furthermore
-is it possible to print the device number and name of all mic's into the console, this way
-the user knows which slot to select for streaming, then the script knows to which device it should listen.
-
-The maximum spectrum data that gets streamed is by default 256, there is no need to change
-this value unless you really know what you are doing (increasing may cause performance issues).
-
-
+- It can recognize up to six different mic's.
+- The user can set the Sensitivity and choose to show debug information. Furthermore is it possible to print the device number and name of all mic's into the console, this way the user knows which slot to select for streaming, then the script knows to which device it should listen.
+- The maximum spectrum data that gets streamed is by default 256, there is no need to change this value unless you really know what you are doing (increasing may cause performance issues).
 
 ## How To Setup
 
@@ -54,7 +41,7 @@ this value unless you really know what you are doing (increasing may cause perfo
 (Once placed on a player or empty gameObject all its public functions and variables can be called from any script. See the call functions below).
 
 
-### (#Chapter 1): User accessible variables and functions
+### [Chapter 1](#Chapter-1): User accessible variables and functions
 
 ```
 //Call variables and functions. All these functions can be called from external java or C# scripts.
@@ -76,7 +63,7 @@ MicControl.MicDeviceGUI (left:float , top:float, width:float, height:float, butt
 ```
 
 
-### (#Chapter 2): Explanation of all the variables and functions used in the script
+### [Chapter 2](#Chapter-2): Explanation of all the variables and functions used in the script
 
 #### Public Variables
 > All variables shown in the editor are to control the input volume/data (you cannot edit the audio, only use it as a control value).
@@ -153,7 +140,7 @@ function OnApplicationFocus(focus: boolean): This will switch the 'focused' bool
 function OnApplicationPause(focus: boolean): This will switch the 'focused' boolean to false if the application is not active.
 
 
-### (#Chapter 3): Examples
+### [Chapter 3](#Chapter-3): Examples
 
 #### Java
 
@@ -206,7 +193,7 @@ MicControl.MicDeviceGUI(400, 100, 300, 100, 110, 0);
 ```
 
 
-### (#Chapter 4): WebPlayer Setup
+### [Chapter 4](#Chapter-4): WebPlayer Setup
 
 To use this script in the web player do not switch the platform to webplayer mode! As of this writing 31-07-2014 the unity editor crashes when initializing the microphone
 in the editors 'webplayer' playmode.
@@ -220,7 +207,7 @@ Webplayer Tutorial: <https://www.youtube.com/watch?v=euL41orNfPM&feature=youtu.b
 
 ## Contributors
 
-- Mark <http://markduisters.blogspot.be/>
+- Mark Duisters <http://markduisters.blogspot.be/>
 
 
 
