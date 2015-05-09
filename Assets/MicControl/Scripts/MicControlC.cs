@@ -9,10 +9,10 @@ public class MicControlC : MonoBehaviour
 
 	private string selectedDevice;
 	private int minFreq = 0;
-	private bool micSelected = false;
-	private bool recording = true;
 	private float ListenerDistance;
 	private Vector3 ListenerPosition;
+	private bool micSelected = false;
+	private bool recording = true;
 	private bool focused = false;
 	private bool Initialised = false;
 
@@ -40,11 +40,11 @@ public class MicControlC : MonoBehaviour
 	//The main entry point to the input signal
 	public static float loudness = 0.0f;
 
-	//The maximum amount of sample data that gets loaded in, best is to leave it on 256, unless you know what you are doing. A higher number gives more accuracy but
-	//lowers performance allot, it is best to leave it at 256.
+	//The maximum amount of sample data that gets loaded in, best is to leave it on 256, unless you know what you are doing.
+	//A higher number gives more accuracy but lowers performance allot, it is best to leave it at 256.
 	public int amountSamples = 256;
 
-	public int maxFreq = 44100;
+	public int maxFreq = 44100;//48000;
 
 	public float sensitivity = 0.4f;
 	public float sourceVolume = 100f;
@@ -78,13 +78,13 @@ public class MicControlC : MonoBehaviour
 	public bool
 		ShowDeviceName = false;
 
-	void Awake ()
-	{
-		audioSource = GetComponent<AudioSource> ();
-	}
-
 	IEnumerator Start ()
 	{
+		//select audio source
+		if (!audioSource) {
+			audioSource = GetComponent<AudioSource> ();
+		}
+
 		// Request permission to use both webcam and microphone.
 		if (Application.isWebPlayer) {
 			yield return Application.RequestUserAuthorization (UserAuthorization.Microphone);
@@ -100,13 +100,14 @@ public class MicControlC : MonoBehaviour
 			Initialised = true;
 		}
 
+		yield return null;
 	}
 
 
 	/*
 	 * Apply the mic input data stream to a float.
 	 */
-	void  Update ()
+	void Update ()
 	{
 		//pause everything when not focused on the app and then re-initialize.
 		if (!focused) {
@@ -124,13 +125,12 @@ public class MicControlC : MonoBehaviour
 			}
 		}
 
-
 		if (Microphone.IsRecording (selectedDevice)) {
 			loudness = GetDataStream () * sensitivity * (sourceVolume / 10);
 
 		}
 		if (debug) {
-			Debug.Log (loudness);
+			//Debug.Log (loudness);
 		}
 
 		//the source volume
@@ -144,7 +144,6 @@ public class MicControlC : MonoBehaviour
 
 		//when 3D is enabled adjust the volume based on distance.
 		if (ThreeD) {
-
 			ListenerDistance = Vector3.Distance (transform.position, audioListener.position);
 			ListenerPosition = audioListener.InverseTransformPoint (transform.position);
 
@@ -158,20 +157,52 @@ public class MicControlC : MonoBehaviour
 
 	}
 
+	/*
+	 * The main data stream from the microphone
+	 */
 	float GetDataStream ()
 	{
 		if (Microphone.IsRecording (selectedDevice)) {
-			float[] dataStream = new float[amountSamples]; //Converts to a float
-			float audioValue = 0.0f;
-			audioSource.GetOutputData (dataStream, 0);
+			//float[] dataStream = new float[amountSamples]; //Converts to a float
+			float[] samples = new float[audioSource.clip.samples * audioSource.clip.channels];
 
+			audioSource.clip.GetData (samples, 0);
+			//audioSource.GetOutputData (dataStream, 0); //Deprecated
+
+			/*float audioValue = 0.0f;
 			foreach (int i in dataStream) {
 				audioValue += Mathf.Abs (i);
+			}*/
+			int i = 0;
+			while (i < amountSamples) {
+				samples [i] = samples [i] * 0.5f;
+				++i;
 			}
-			return audioValue / amountSamples;
+			audioSource.clip.SetData (samples, 0);
+
+			return Sum (samples) / amountSamples;
 		} else {
+			Debug.Log ("The active microphone is not recording.");
 			return 0.0f;
 		}
+	}
+
+
+	private float Sum (params float[] samples)
+	{
+		float result = 0.0f;
+		for (int i = 0; i < samples.Length; i++) {
+			result += samples [i];
+		}
+
+		return result;
+	}
+
+	private float Average (params float[] samples)
+	{
+		float sum = Sum (samples);
+		float result = (float)sum / samples.Length;
+		return result;
 	}
 
 	/*
@@ -180,8 +211,9 @@ public class MicControlC : MonoBehaviour
 	void OnGUI ()
 	{
 		if (SelectIngame == true) {
-			if (Microphone.devices.Length > 0 && micSelected == false)//If there is more than one device, choose one.
-				for (int i = 0; i < Microphone.devices.Length; ++i)
+			//If there is more than one device, choose one.
+			if (Microphone.devices.Length > 0 && micSelected == false) {
+				for (int i = 0; i < Microphone.devices.Length; ++i) {
 					if (GUI.Button (new Rect (400, 100 + (110 * i), 300, 100), Microphone.devices [i].ToString ())) {
 						StopMicrophone ();
 						selectedDevice = Microphone.devices [i].ToString ();
@@ -190,7 +222,8 @@ public class MicControlC : MonoBehaviour
 						micSelected = true;
 
 					}
-
+				}
+			}
 			if (Microphone.devices.Length < 1 && micSelected == false) {//If there is only 1 decive make it default
 				selectedDevice = Microphone.devices [0].ToString ();
 				GetMicCaps ();
@@ -207,11 +240,6 @@ public class MicControlC : MonoBehaviour
 	 */
 	private void InitMic ()
 	{
-		//select audio source
-		if (!audioSource) {
-			audioSource = GetComponent<AudioSource> ();
-		}
-
 		//only Initialize microphone if a device is detected
 		if (Microphone.devices.Length >= 0) {
 
@@ -290,9 +318,10 @@ public class MicControlC : MonoBehaviour
 			//if you only need the data stream values  check Mute, if you want to hear yourself ingame don't check Mute.
 			audioSource.mute = Mute;
 
+
 			//don't do anything until the microphone started up
 			while (!(Microphone.GetPosition(selectedDevice) > 0)) {
-				if (debug) {
+				if (debug && Time.deltaTime >= 0.1f) {
 					Debug.Log ("Awaiting connection");
 				}
 			}
@@ -313,29 +342,51 @@ public class MicControlC : MonoBehaviour
 	/*
 	 * For the above control the mic start or stop
 	 */
-	public void  StartMicrophone ()
+	public void StartMicrophone ()
 	{
-		audioSource.clip = Microphone.Start (selectedDevice, true, 10, maxFreq);//Starts recording
+		//Starts recording
+		audioSource.clip = Microphone.Start (selectedDevice, true, 10, maxFreq);
+
+		if (debug) {
+			Debug.Log ("Selected device: " + selectedDevice);
+		}
+
+		// Wait until the recording has started
 		while (!(Microphone.GetPosition(selectedDevice) > 0)) {
-		} // Wait until the recording has started
-		audioSource.Play (); // Play the audio source!
+			if (debug) {
+				Debug.Log ("Waiting on recording to start...");
+			}
+		}
+
+		if (debug) {
+			Debug.Log ("Playing the recorded audio...");
+		}
+		// Play the audio recording
+		audioSource.Play ();
+	}
+
+	public void StopMicrophone ()
+	{
+		if (debug) {
+			Debug.Log ("Stopping the microphone...");
+		}
+
+		//Stops the audio
+		audioSource.Stop ();
+
+		//Stops the recording of the device
+		Microphone.End (selectedDevice);
 
 	}
 
-	public void  StopMicrophone ()
+	void GetMicCaps ()
 	{
-		audioSource.Stop ();//Stops the audio
-		Microphone.End (selectedDevice);//Stops the recording of the device
-
-	}
-
-	void  GetMicCaps ()
-	{
-		Microphone.GetDeviceCaps (selectedDevice, out minFreq, out maxFreq); //Gets the frequency of the device
+		//Gets the frequency of the device
+		Microphone.GetDeviceCaps (selectedDevice, out minFreq, out maxFreq);
 
 		//These 2 lines of code are mainly for windows computers
 		if ((minFreq + maxFreq) == 0) {
-			maxFreq = 44100;
+			maxFreq = 44100; //48000;
 		}
 	}
 
@@ -343,10 +394,11 @@ public class MicControlC : MonoBehaviour
 	/*
 	 * Create a gui button in another script that calls to this script
 	 */
-	public void  MicDeviceGUI (float left, float top, float width, float height, float buttonSpaceTop, float buttonSpaceLeft)
+	public void MicDeviceGUI (float left, float top, float width, float height, float buttonSpaceTop, float buttonSpaceLeft)
 	{
-		if (Microphone.devices.Length > 1 && micSelected == false)//If there is more than one device, choose one.
-			for (int i=0; i < Microphone.devices.Length; ++i)
+		//If there is more than one device, choose one.
+		if (Microphone.devices.Length > 1 && micSelected == false) {
+			for (int i=0; i < Microphone.devices.Length; ++i) {
 				if (GUI.Button (new Rect (left + (buttonSpaceLeft * i), top + (buttonSpaceTop * i), width, height), Microphone.devices [i].ToString ())) {
 					StopMicrophone ();
 					selectedDevice = Microphone.devices [i].ToString ();
@@ -354,7 +406,11 @@ public class MicControlC : MonoBehaviour
 					StartMicrophone ();
 					micSelected = true;
 				}
-		if (Microphone.devices.Length < 2 && micSelected == false) {//If there is only 1 decive make it default
+			}
+		}
+
+		//If there is only 1 microphone make it default
+		if (Microphone.devices.Length < 2 && micSelected == false) {
 			selectedDevice = Microphone.devices [0].ToString ();
 			GetMicCaps ();
 			micSelected = true;
@@ -362,26 +418,38 @@ public class MicControlC : MonoBehaviour
 	}
 
 	/*
-	 * flush the date through a custom created audio clip, this controls the data flow of that clip
+	 * Flush the data through the custom created audio clip. This controls the data flow of that clip
 	 * Creates a 1 sec long audioclip, with a 440hz sinoid
 	 */
-	void  OnAudioRead (float[] data)
+	void OnAudioFilterRead (float[] data, int channels)
 	{
 		for (int count = 0; count < data.Length; count++) {
 			data [count] = Mathf.Sign (Mathf.Sin (2 * Mathf.PI * frequency * position / sampleRate));
 			position++;
 		}
+		//Debug.Log ("OnAudioFilterRead(): " + data + " : " + channels);
+		//Debug.Log (data);
 	}
 
-	void  OnAudioSetPosition (int newPosition)
+	void PCMReaderCallback (float[] data)
 	{
+		Debug.Log ("PCMReaderCallback()");
+		Debug.Log (data);
+		Debug.Log ("-----");
+	}
+
+	void PCMSetPositionCallback (int newPosition)
+	{
+		Debug.Log ("PCMSetPositionCallback()");
+		Debug.Log (newPosition);
+		Debug.Log ("=====");
 		position = newPosition;
 	}
 
 	/*
 	 * Start or stop the script from running when the state is paused or not.
 	 */
-	void  OnApplicationFocus (bool focus)
+	void OnApplicationFocus (bool focus)
 	{
 		focused = focus;
 	}
