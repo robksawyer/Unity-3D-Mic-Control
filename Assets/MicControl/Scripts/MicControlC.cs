@@ -175,7 +175,7 @@ public class MicControlC : MonoBehaviour
 			}*/
 			int i = 0;
 			while (i < amountSamples) {
-				samples [i] = samples [i] * 0.5f;
+				samples [i] = samples [i] * 10.0f;
 				++i;
 			}
 			audioSource.clip.SetData (samples, 0);
