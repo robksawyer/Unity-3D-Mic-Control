@@ -12,9 +12,9 @@ This is not included because it troubles the normal machines builds.
 - [Chapter 3](#chapter-3-examples): Examples.
 - [Chapter 4](#chapter-4-webplayer-setup): WebPLayer setup.
 
-Newest video tutorial: <https://www.youtube.com/watch?v=pD29teWi2fg>
-Webplayer tutorial: <https://www.youtube.com/watch?v=euL41orNfPM>
-Older video tutorial: <http://www.youtube.com/watch?v=VqHYP7iVG3E>
+- Newest video tutorial: <https://www.youtube.com/watch?v=pD29teWi2fg>
+- Webplayer tutorial: <https://www.youtube.com/watch?v=euL41orNfPM>
+- Older video tutorial: <http://www.youtube.com/watch?v=VqHYP7iVG3E>
 
 ### Functionality Overview
 
